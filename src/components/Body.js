@@ -8,7 +8,7 @@ function filterData(searchInput,resturants){
 return resturants.filter((restaurant)=>restaurant.info.name.includes(searchInput));
 }
 
-// Config Driven UI
+// Config Driven 
 
 const Body =()=>{
 
