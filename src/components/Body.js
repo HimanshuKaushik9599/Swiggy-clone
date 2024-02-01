@@ -1,56 +1,72 @@
-import {ResturantList} from "./constant";
 import ResturantCard from "./ResturantCard";
-import {useState,useEffect} from "react";
+import { useState } from "react";
+import Shimmer from "./shimmer";
+import { Link, useOutletContext } from "react-router-dom";
+import useOnline from "../../Utils/useOnline";
+import { filterData } from "../../Utils/helper";
+import { useRestaurantList } from "../../Utils/useRestaurantList";
+
+// Config Driven
+
+const Body = (props) => {
+  const [setMaal] = useOutletContext();
 
 
-
-function filterData(searchInput,resturants){
-return resturants.filter((restaurant)=>restaurant.info.name.includes(searchInput));
-}
-
-// Config Driven 
-
-const Body =()=>{
-
-  // searchState is a loacl state variable
-  const [searchInput,setSearchInput]=useState("");// To create State variable
-  const [resturants ,setResturants]=useState(ResturantList);
-
-  useEffect(()=>{
-    //make api call here so that api will call only one time - on my page load 
-    getResturant();
-  },[])
-
-  async function getResturant(){
-  const data=await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.1482612&lng=77.33316040000001&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING");
-  const json=await data.json();
-  console.log(json);
-
-  //optional chaining
-  setResturants(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-  }
-
-
-    return(
-      <>        
-      <div className="search-container">
-        <input type="text" className="search-input" placeholder="search" value={searchInput} onChange={(e)=>{ setSearchInput(e.target.value) }}/>
-        <button className="seach-btn" onClick={()=>{
-          const data=filterData(searchInput,resturants)
-          setResturants(data);
-        }}>Search</button>
-      </div>
-        <div className="restaurant-list">
-          {
-            resturants.map(restaurant=>{
-              return    <ResturantCard restaurant={restaurant} key={restaurant.info.id}/>
+  const [searchInput, setSearchInput] = useState(""); // To create State variable
+  const { allRestaurants, filteredRestaurant, Filter } = useRestaurantList();
   
-            })
-          }
-   
-        </div>
-        </>
-        );
-  }
+  let data = [];
 
-  export default Body;
+  const isOnline = useOnline();
+  if (!isOnline) {
+    return <h1> Offline please check your internet connection!!!</h1>;
+  }
+  // {setMaal("World")}
+
+  return (
+    <div className="body">
+
+      {allRestaurants && allRestaurants.length === 0 ? (
+        <Shimmer />
+      ) : (
+        <>
+          <div className="search-container">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search"
+              value={searchInput}
+              onChange={(e) => {
+                setSearchInput(e.target.value);
+              }}
+            />
+            <button
+              className="search-btn btn-primary "
+              onClick={() => {
+                data = filterData(searchInput, allRestaurants);
+                Filter(data);
+              }}
+            >
+              Search
+            </button>
+          </div>
+          <div className="restaurant-list">
+            {filteredRestaurant &&
+              filteredRestaurant.map((restaurant) => {
+                return (
+                  <Link
+                    to={"/restaurant/" + restaurant.info.id}
+                    key={restaurant.info.id}
+                  >
+                    <ResturantCard restaurant={restaurant} />
+                  </Link>
+                );
+              })}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default Body;

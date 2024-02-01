@@ -1,6 +1,10 @@
-const Footer=()=>{
-    return(
-        <h4>Footer</h4>
-    );
-  }
-export default Footer;  
+const Footer = () => {
+  return (
+    <div>
+      <p>&copy; {new Date().getFullYear()}   created by Himanshu</p>
+      <p></p>
+    </div>
+  );
+}
+
+export default Footer;
