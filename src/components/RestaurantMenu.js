@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import useRestaurant from "../../Utils/useRestaurantMenu";
 import Shimmer from "./shimmer";
 import { useParams } from "react-router-dom";
@@ -11,25 +11,27 @@ const RestaurantMenu = () => {
   const myrestaurant = useRestaurant();
   // console.log(myrestaurant);
   const { cuisines, name } =
-    Object.keys(myrestaurant).length && myrestaurant.cards[0].card.card.info;
+    Object.keys(myrestaurant).length && myrestaurant.cards[2].card.card.info;
   // const{itemCards}=Object.keys(myrestaurant).length &&    myrestaurant.cards[2].groupedCard.cardGroupMap.REGULAR.cards;
   //   console.log( myrestaurant.cards[2].groupedCard.cardGroupMap.REGULAR.cards);
 
   const categories =
     Object.keys(myrestaurant).length &&
-    myrestaurant.cards[2].groupedCard.cardGroupMap.REGULAR.cards.filter(
+    myrestaurant.cards[4].groupedCard.cardGroupMap.REGULAR.cards.filter(
       (c) =>
         c.card?.card?.["@type"] ==
         "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
     );
+    // console.log(categories);
 
   return !myrestaurant ? (
     <Shimmer />
   ) : (
     <div className="restaurant-menu d-flex justify-content-center w-100 ">
-      <div className="text-center w-50">
-        <h2>{name}</h2>
-        <h4>{cuisines}</h4>
+      <div className="text-center w-50 ">
+        <h1>{name}</h1>
+        
+        <h4>({cuisines?.join(",")})</h4>
         {Array.isArray(categories) ? (
           categories.map((category, index) => (
             <RestaurantCategotry
@@ -40,7 +42,7 @@ const RestaurantMenu = () => {
             />
           ))
         ) : (
-          <p>No categories found</p>
+          <Shimmer />
         )}
       </div>
     </div>

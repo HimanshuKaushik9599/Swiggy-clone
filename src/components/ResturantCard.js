@@ -1,6 +1,7 @@
 import { img_cdn, ResturantList } from "./constant";
 
 const ResturantCard = (props) => {
+  // console.log(props);
   return (
     <div className="card">
       <img src={img_cdn + props.restaurant.info.cloudinaryImageId} />
@@ -11,6 +12,7 @@ const ResturantCard = (props) => {
         {props.restaurant.info.avgRating}
         <i className="fa-solid fa-star" style={{ color: "green" }}></i> Stars
       </h6>
+      <h6>{props.restaurant.info.sla.lastMileTravelString}</h6>
     </div>
   );
 };

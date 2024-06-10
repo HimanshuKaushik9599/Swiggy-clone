@@ -18,7 +18,7 @@ class Profile extends React.Component{
         <h2>Name : {this.props.name} </h2>
         <h2>Count:{this.state.count}</h2>
         <button onClick={()=>{
-            //We do not  mutate state diraectly 
+            //We do not  mutate state directly 
             //Never do this..state=something 
             this.setState({
                 count:4,

@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <div>
+    <div className="  ">
+      
       <p>&copy; {new Date().getFullYear()}   created by Himanshu</p>
-      <p></p>
     </div>
   );
 }

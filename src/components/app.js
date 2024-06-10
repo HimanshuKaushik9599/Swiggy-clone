@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import HeaderComponent from "./Header.js";
 import Body from "./Body.js";
@@ -9,13 +9,19 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import ContactUs from "./Contact.js";
 import RestaurantMenus from "./RestaurantMenu.js";
 import Myprofile from "./profile.js";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import appStore from "../../Utils/appStore.js";
 import Cart from "./Cart.js";
+import Login from "./Login.js";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../Utils/firebase.js";
+import { addUser, removeUser } from "../../Utils/userSlice.js";
 
 const AppLayout = () => {
   const[maal,setMaal]=useState("hello");
   // console.log(maal,"---maal")
+  // const dispatch=useDispatch();
+
   return (
     <>
     <Provider store={appStore}>
@@ -26,6 +32,7 @@ const AppLayout = () => {
     </>
   );
 };
+
 
 //list of paths  it is a  array of paths
 const appRouter = createBrowserRouter([
@@ -60,9 +67,14 @@ const appRouter = createBrowserRouter([
         path: "/cart",
         element: <Cart />
       },
+      {
+        path: "/login",
+        element: <Login />
+      },
     ],
   },
 ]);
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={appRouter} />);

@@ -14,7 +14,10 @@ const useRestaurant = () => {
     );
     const json = await data.json();
     setRestaurant(json.data);
+    console.log(json);
   }
+
+  // console.log(restaurant);
 
   return restaurant;
 };

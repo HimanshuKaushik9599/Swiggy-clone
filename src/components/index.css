@@ -94,6 +94,7 @@ padding-top: 10px;
     border-radius: 4px;
     margin-right: 8px;
     font-size: 14px;
+    width: 20%;
   }
   
   .search-btn {
@@ -115,5 +116,27 @@ padding-top: 10px;
     height:100px;
     width: 100px;
   }
+  .username-font{
+    font-style: italic !important;
+  }
+  /* YourComponent.css */
+.slide-in-right {
+    animation: slideInRight 0.5s ease-out;
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .cursor-class{
+    cursor: pointer;
+  }
+  
   /* Add more styles as needed */
+
   

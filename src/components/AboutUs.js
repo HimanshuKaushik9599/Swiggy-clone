@@ -4,10 +4,8 @@ import ProfileFunctionalComponent from "./profile";
 const About =()=>{
     return(
         <>
-        <h1>About Us </h1>
-        <p>This is a namaste React course </p>
-        {/* <ProfileFunctionalComponent  name={"Himanshu From functional based component "}/> */}
-        <ProfileClass name={"himanshu Sharma"} />
+        <h3 className="margin-div">About Us </h3>
+        <ProfileFunctionalComponent  name={"Himanshu From functional based component "}/>
         </>
     )
 }

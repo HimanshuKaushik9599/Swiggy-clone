@@ -1,12 +1,16 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useOnline from "../../Utils/useOnline";
 import { filterData } from "../../Utils/helper";
 import userContextData from "../../Utils/userContext";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "../../Utils/userSlice";
+import { auth } from "../../Utils/firebase";
+import { signOut } from "firebase/auth";
 
 const Title = () => (
+  
+  
   <a href="/">
     {" "}
     <img
@@ -15,6 +19,7 @@ const Title = () => (
       src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJG3kMcrgjZ3lKcqQkzU_LqoCYKcTvtDBr3tj3PQReeA&s"
     />
   </a>
+  
 );
 
 // const [filteredRestaurant,setFilteredRestaurant]=useState([]);
@@ -23,11 +28,26 @@ const HeaderComponent = (props) => {
   const isOnline = useOnline();
 
   // console.log(props);
-  const [IsLogin, setLogin] = useState(true);
+  // const [IsLogin, setLogin] = useState(true);
   const contextData=useContext(userContextData);
-  console.log(contextData);
+  // console.log(contextData);
+  const navigate=useNavigate();
+  const userAvailable=useSelector((store)=>store.user);
+  const dispatch=useDispatch();
+  // {console.log(userAvailable)}
 
   const cartItems=useSelector((store)=> store.cart.items);  // subscribing to the store  using a selecctor 
+
+  const handleLogOut =()=>{
+    signOut(auth).then(() => {
+      navigate("/");
+    }).catch((error) => {
+      // An error happened.
+    });
+// dispatch(removeUser());
+  }
+  const userName=useSelector((store)=>store.user);
+
 
   return (
     <div className="header" style={{}}>
@@ -82,27 +102,27 @@ const HeaderComponent = (props) => {
           </Link>
           <li>
             {" "}
-            {IsLogin ? (
+            {!userAvailable ? 
               <button
                 className="btn-primary rounded ml-5 my-3 mx-2"
                 onClick={() => {
-                  setLogin(false);
+                  // setLogin(false);
+                  navigate("/login");
                 }}
               >
                 Login
               </button>
-            ) : (
-              <button
+             :
+               <button
                 className="btn-danger rounded ml-5 my-3 mx-2"
-                onClick={() => {
-                  setLogin(true);
-                }}
+                 onClick={handleLogOut}
+                
               >
                 LogOut
-              </button>
-            )}
+              </button> 
+             } 
           </li>
-          <li className="my-3 mx-1 ">({contextData.loggedInUser})</li>
+          {/* <li className="my-3 mx-1 ">({userName.displayName})</li> */}
         </ul>
       </div>
       {/* <h1>{isOnline?"🟢":"🔴"}</h1> */}
